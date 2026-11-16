@@ -1,0 +1,156 @@
+blocks:
+- all_upstream_blocks_executed: true
+  color: null
+  configuration:
+    data_provider: mysql
+    data_provider_profile: default
+    dbt: {}
+    disable_query_preprocessing: false
+    export_write_policy: append
+    limit: 1000
+    use_raw_sql: true
+  downstream_blocks:
+  - pick_medal
+  executor_config: null
+  executor_type: local_python
+  has_callback: false
+  language: sql
+  name: create_table
+  retry_config: null
+  status: executed
+  timeout: null
+  type: transformer
+  upstream_blocks: []
+  uuid: create_table
+- all_upstream_blocks_executed: true
+  color: null
+  configuration:
+    data_provider: mysql
+    data_provider_profile: default
+    export_write_policy: append
+  downstream_blocks:
+  - calc_gold
+  - calc_silver
+  - calc_bronze
+  executor_config: null
+  executor_type: local_python
+  has_callback: false
+  language: python
+  name: pick_medal
+  retry_config: null
+  status: executed
+  timeout: null
+  type: transformer
+  upstream_blocks:
+  - create_table
+  uuid: pick_medal
+- all_upstream_blocks_executed: true
+  color: null
+  configuration: {}
+  downstream_blocks:
+  - generate_delay
+  executor_config: null
+  executor_type: local_python
+  has_callback: false
+  language: python
+  name: calc_Bronze
+  retry_config: null
+  status: executed
+  timeout: null
+  type: transformer
+  upstream_blocks:
+  - pick_medal
+  uuid: calc_bronze
+- all_upstream_blocks_executed: true
+  color: null
+  configuration: {}
+  downstream_blocks:
+  - generate_delay
+  executor_config: null
+  executor_type: local_python
+  has_callback: false
+  language: python
+  name: calc_Silver
+  retry_config: null
+  status: executed
+  timeout: null
+  type: transformer
+  upstream_blocks:
+  - pick_medal
+  uuid: calc_silver
+- all_upstream_blocks_executed: true
+  color: null
+  configuration: {}
+  downstream_blocks:
+  - generate_delay
+  executor_config: null
+  executor_type: local_python
+  has_callback: false
+  language: python
+  name: calc_Gold
+  retry_config: null
+  status: executed
+  timeout: null
+  type: transformer
+  upstream_blocks:
+  - pick_medal
+  uuid: calc_gold
+- all_upstream_blocks_executed: true
+  color: null
+  configuration: {}
+  downstream_blocks:
+  - check_sensor
+  executor_config: null
+  executor_type: local_python
+  has_callback: false
+  language: python
+  name: generate_delay
+  retry_config: null
+  status: executed
+  timeout: null
+  type: transformer
+  upstream_blocks:
+  - calc_bronze
+  - calc_silver
+  - calc_gold
+  uuid: generate_delay
+- all_upstream_blocks_executed: true
+  color: null
+  configuration: {}
+  downstream_blocks: []
+  executor_config: null
+  executor_type: local_python
+  has_callback: false
+  language: python
+  name: check_sensor
+  retry_config: null
+  status: failed
+  timeout: null
+  type: transformer
+  upstream_blocks:
+  - generate_delay
+  uuid: check_sensor
+cache_block_output_in_memory: false
+callbacks: []
+concurrency_config: {}
+conditionals: []
+created_at: '2026-11-16 12:44:25.850778+00:00'
+data_integration: null
+description: Домашнє завдання №7
+executor_config: {}
+executor_count: 1
+executor_type: null
+extensions: {}
+name: ДЗ7
+notification_config: {}
+remote_variables_dir: null
+retry_config: {}
+run_pipeline_in_one_process: false
+settings:
+  triggers: null
+spark_config: {}
+tags: []
+type: python
+uuid: дз7
+variables_dir: /home/src/mage_data/my_project
+widgets: []

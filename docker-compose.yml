@@ -1,0 +1,43 @@
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: mysql_db
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: medal_db
+      MYSQL_USER: mage_user
+      MYSQL_PASSWORD: mage_password
+#    ports:
+#      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - mage-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-prootpassword"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  mage:
+    build: .
+    container_name: mage_server
+    command: /app/run_app.sh mage start my_project
+    ports:
+      - "6789:6789"
+    environment:
+      - USER_CODE_PATH=/home/src/my_project
+    volumes:
+      - .:/home/src
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - mage-network
+
+volumes:
+  mysql_data:
+
+networks:
+  mage-network:
+    driver: bridge
